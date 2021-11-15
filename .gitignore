@@ -1,0 +1,8 @@
+build/
+*.nds
+*.elf
+*.bak
+data/map.bin
+MapGenerator/.vs/
+MapGenerator/Debug/
+MapGenerator/Release/
