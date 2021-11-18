@@ -30,12 +30,15 @@ int main()
 	Texture texture = GetTexture(0);
 	iprintf("%d, %d\n", texture.width, texture.height);
 
+	Console::SetPrintString("Please Kill Me");
+
+
 	while(1)
 	{
 		// update
+		Console::Update();
 		Input::Update();
 		player.update();
-		
 
 		// render
 		Renderer::BeginFrame();
@@ -54,3 +57,5 @@ int main()
 
 	return 0;
 }//end main
+
+
