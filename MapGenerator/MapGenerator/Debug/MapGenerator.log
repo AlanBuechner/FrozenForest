@@ -1,3 +1,1 @@
-﻿  Map.cpp
-C:\devkitPro\examples\nds\FrozenForest\MapGenerator\MapGenerator\src\Map\Map.cpp(222,26): warning C4018: '<': signed/unsigned mismatch
-  MapGenerator.vcxproj -> C:\devkitPro\examples\nds\FrozenForest\MapGenerator\Debug\MapGenerator.exe
+﻿  MapGenerator.vcxproj -> C:\Users\DavidBrockmeyer\FrozenForest\MapGenerator\Debug\MapGenerator.exe
