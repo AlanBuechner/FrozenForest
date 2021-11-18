@@ -1,0 +1,18 @@
+﻿  Image.cpp
+  Map.cpp
+C:\Users\tallen\FrozenForest\MapGenerator\MapGenerator\src\Map\Map.cpp(120,40): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\Users\tallen\FrozenForest\MapGenerator\MapGenerator\src\Map\Map.cpp(124,39): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\Users\tallen\FrozenForest\MapGenerator\MapGenerator\src\Map\Map.cpp(128,39): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\Users\tallen\FrozenForest\MapGenerator\MapGenerator\src\Map\Map.cpp(132,42): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\Users\tallen\FrozenForest\MapGenerator\MapGenerator\src\Map\Map.cpp(143,82): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\Users\tallen\FrozenForest\MapGenerator\MapGenerator\src\Map\Map.cpp(156,79): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\Users\tallen\FrozenForest\MapGenerator\MapGenerator\src\Map\Map.cpp(164,80): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\Users\tallen\FrozenForest\MapGenerator\MapGenerator\src\Map\Map.cpp(166,124): warning C4267: 'initializing': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\Users\tallen\FrozenForest\MapGenerator\MapGenerator\src\Map\Map.cpp(198,52): warning C4267: '+=': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\Users\tallen\FrozenForest\MapGenerator\MapGenerator\src\Map\Map.cpp(203,55): warning C4267: '+=': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\Users\tallen\FrozenForest\MapGenerator\MapGenerator\src\Map\Map.cpp(208,88): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\Users\tallen\FrozenForest\MapGenerator\MapGenerator\src\Map\Map.cpp(210,135): warning C4267: 'initializing': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\Users\tallen\FrozenForest\MapGenerator\MapGenerator\src\Map\Map.cpp(222,26): warning C4018: '<': signed/unsigned mismatch
+  Source.cpp
+  Generating Code...
+  MapGenerator.vcxproj -> C:\Users\tallen\FrozenForest\MapGenerator\x64\Debug\MapGenerator.exe
