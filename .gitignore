@@ -6,3 +6,5 @@ data/map.bin
 MapGenerator/.vs/
 MapGenerator/Debug/
 MapGenerator/Release/
+MapGenerator/MapGenerator/Debug/
+MapGenerator/MapGenerator/Release/
