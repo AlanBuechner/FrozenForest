@@ -229,3 +229,63 @@ void CompileMap(Map& map, byte_t** data, size_t* size)
 	
 
 }
+
+bool TileMap::Write(const rapidjson::Value& value)
+{
+	return false;
+}
+
+bool TileMap::Read(const rapidjson::Value& value)
+{
+	Header header; 
+	Layer layer; 
+	Chunk chunk; 
+	ChunkSection cs; 
+	Tile tile; 
+	TileSection ts; 
+	Vec3 v3; 
+	Vec2 v2; 
+	Vertex vertex; 
+	Mesh mesh; 
+	MeshSection ms; 
+	Texture texture; 
+	TextureSection texs; 
+	Map map; 
+
+	JSON_READ(value, tile.meshId); 
+	JSON_READ(value, tile.rotation); 
+	JSON_READ(value, header.chunkSectionOffset); 
+	JSON_READ(value, header.meshSectionOffset); 
+	JSON_READ(value, header.textureSectionOffset); 
+	JSON_READ(value, header.tileSectionOffset); 
+	//JSON_READ(value, layer.height); 
+	//JSON_READ(value, layer.tiles); 
+	JSON_READ(value, chunk.x); 
+	JSON_READ(value, chunk.y); 
+	//JSON_READ(value, chunk.collisonMask); 
+	//JSON_READ(value, chunk.layers); 
+	//JSON_READ(value, cs.chunks); 
+	//JSON_READ(value, ts.tiles); 
+	JSON_READ(value, v3.x); 
+	JSON_READ(value, v3.y); 
+	JSON_READ(value, v3.z); 
+	JSON_READ(value, v2.x); 
+	JSON_READ(value, v2.y);
+	//JSON_READ(value, vertex.position); 
+	//JSON_READ(value, vertex.uv); 
+	//JSON_READ(value, mesh.vertices); 
+	//JSON_READ(value, mesh.indices); 
+	JSON_READ(value, mesh.quads); 
+	//JSON_READ(value, ms.meshes); 
+	//JSON_READ(value, texture.data); 
+	JSON_READ(value, texture.width); 
+	JSON_READ(value, texture.height); 
+	//JSON_READ(value, texs.textures); 
+	//JSON_READ(value, map.chunkSection); 
+	//JSON_READ(value, map.header); 
+	//JSON_READ(value, map.meshSection); 
+	//JSON_READ(value, map.textureSection); 
+	//JSON_READ(value, map.tileSection); 
+
+	return true;
+}
