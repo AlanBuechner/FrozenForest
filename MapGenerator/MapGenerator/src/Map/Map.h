@@ -1,4 +1,5 @@
 #pragma once
+#include "../Json.h"
 #include <cstdint>
 #include <vector>
 #include <string>
@@ -130,3 +131,9 @@ size_t MeshAllocationSize(Map& map);
 size_t MapAllocationSize(Map& map);
 
 void CompileMap(Map& map, byte_t** data, size_t* size);
+
+struct TileMap
+{
+	bool Write(const rapidjson::Value& value); 
+	bool Read(const rapidjson::Value& value); 
+};
