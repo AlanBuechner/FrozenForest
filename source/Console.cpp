@@ -15,7 +15,7 @@ namespace Console
 	std::string prevPrint;
 	float nextPrintTime;
 	float currentTime;
-	int currentIndex = 0;
+	uint32_t currentIndex = 0;
 	void Init()
 	{
 		consoleDemoInit();
@@ -41,23 +41,22 @@ namespace Console
 
 	void Update()
 	{
-		{
 
-			if (!IsPrinting())
+		if (!IsPrinting())
+		{
+			if (currentIndex <= print.size())
 			{
-				if (currentIndex <= print.size())
+				currentTime += DELTA_TIME;
+				if (currentTime >= nextPrintTime)
 				{
-					currentTime += DELTA_TIME;
-					if (currentTime >= nextPrintTime)
-					{
-						iprintf("%c", print[currentIndex]);
-						nextPrintTime += 0.25f;
+					iprintf("%c", print[currentIndex]);
+					nextPrintTime += 0.25f;
 						currentIndex++;
-						if (currentIndex == print.size())
-							print = "";
-					}
+					if (currentIndex == print.size())
+						print = "";
 				}
 			}
+
 			if (Input::IsKeyPressed(Key::A))
 			{
 				Clear();

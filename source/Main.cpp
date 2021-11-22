@@ -18,20 +18,15 @@ int main()
 
 
 	Camera cam;
-	cam.Position = {0,7,1};
+	cam.Position = Math::Vec3{0,7,1};
 	cam.Dir = -cam.Position;
 	cam.fov = 75.0f;
 	Renderer::SetCamera(cam);
 
 	Entity player;
+	player.position = Math::Vec3{4, 0, -4};
 
-	iprintf("%u\n", (size_t)GetHeader().textureSectionOffset);
-	iprintf("%ld\n", GetNumberOfTextures());
-	Texture texture = GetTexture(0);
-	iprintf("%d, %d\n", texture.width, texture.height);
-
-	Console::SetPrintString("Please Kill Me");
-
+	Console::SetPrintString("hello world!");
 
 	while(1)
 	{
@@ -42,16 +37,13 @@ int main()
 
 		// render
 		Renderer::BeginFrame();
+
+		// 3d renderering
 		Renderer::DrawChunk(GetChunk(0), player.position);
-		//Renderer::DrawChunk(GetChunk(0), { -9,0,-9 });
-		//Renderer::DrawChunk(GetChunk(0), { -9,0,0 });
-		//Renderer::DrawChunk(GetChunk(0), { -9,0,9 });
-		//Renderer::DrawChunk(GetChunk(0), { 0,0,-9 });
-		//Renderer::DrawChunk(GetChunk(0), { 0,0,0 });
-		//Renderer::DrawChunk(GetChunk(0), { 0,0,9 });
-		//Renderer::DrawChunk(GetChunk(0), { 9,0,-9 });
-		//Renderer::DrawChunk(GetChunk(0), { 9,0,0 });
-		//Renderer::DrawChunk(GetChunk(0), { 9,0,9 });
+
+		// 2d renderering
+		Renderer::DrawAnimatedSprite(SW/2-16, SH/2-30, PLAYER_SPRITE, player.state*3 + player.frame);
+
 		Renderer::EndFrame();
 	}
 

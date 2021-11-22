@@ -25,7 +25,7 @@ BUILD    := build
 SOURCES  := source
 INCLUDES := include
 DATA     := data
-GRAPHICS :=
+GRAPHICS := images
 AUDIO    :=
 ICON     :=
 
@@ -47,16 +47,23 @@ LDFLAGS   = -specs=ds_arm9.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project (order is important)
 #---------------------------------------------------------------------------------
-LIBS := -lnds9
+ARCH		:=	-mthumb -mthumb-interwork
 
-# automatigically add libraries for NitroFS
-ifneq ($(strip $(NITRO)),)
-LIBS := -lfilesystem -lfat $(LIBS)
-endif
-# automagically add maxmod library
-ifneq ($(strip $(AUDIO)),)
-LIBS := -lmm9 $(LIBS)
-endif
+CFLAGS	:=	-g -Wall -O2\
+ 			-march=armv5te -mtune=arm946e-s -fomit-frame-pointer\
+			-ffast-math \
+			$(ARCH)
+
+CFLAGS	+=	$(INCLUDE) -DARM9
+CXXFLAGS	:=	$(CFLAGS) -fno-rtti -fno-exceptions
+
+ASFLAGS	:=	-g $(ARCH)
+LDFLAGS	=	-specs=ds_arm9.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
+
+#---------------------------------------------------------------------------------
+# any extra libraries we wish to link with the project
+#---------------------------------------------------------------------------------
+LIBS	:= -lmm9 -lnds9
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
@@ -80,11 +87,13 @@ export VPATH := $(CURDIR)/$(subst /,,$(dir $(ICON)))\
 
 export DEPSDIR := $(CURDIR)/$(BUILD)
 
-CFILES   := $(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.c)))
-CPPFILES := $(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
-SFILES   := $(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.s)))
-PNGFILES := $(foreach dir,$(GRAPHICS),$(notdir $(wildcard $(dir)/*.png)))
-BINFILES := $(foreach dir,$(DATA),$(notdir $(wildcard $(dir)/*.*)))
+CFILES   	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.c)))
+CPPFILES 	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
+SFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.s)))
+PNGFILES	:=	$(foreach dir,$(GRAPHICS),$(notdir $(wildcard $(dir)/*.png)))
+BINFILES 	:=	$(foreach dir,$(DATA),$(notdir $(wildcard $(dir)/*.*)))
+
+export MODFILES	:=	$(foreach dir,$(notdir $(wildcard $(MUSIC)/*.*)),$(CURDIR)/$(MUSIC)/$(dir))
 
 # prepare NitroFS directory
 ifneq ($(strip $(NITRO)),)
@@ -203,7 +212,7 @@ $(SOUNDBANK) : $(MODFILES)
 # add additional rules like this for each image extension
 # you use in the graphics folders
 #---------------------------------------------------------------------------------
-%.s %.h: %.png %.grit
+%.s %.h	: %.png %.grit
 #---------------------------------------------------------------------------------
 	grit $< -fts -o$*
 
@@ -224,11 +233,5 @@ endif
 run:
 	start FrozenForest.nds
 
-MAPGEN_DIRS = $(shell find MapGenerator/ -type d)
-MAPGEN_FILES = $(shell find MapGenerator/ -type f -name '*')
-
-MAP_DIRS = $(shell find Map/ -type d)
-MAP_FILES = $(shell find Map/ -type f -name '*')
-
-map: Map/ $(MAP_DIRS) $(MAP_FILES) MapGenerator/ $(MAPGEN_DIRS) $(MAPGEN_FILES)
+map:
 	./MapGenerator\Debug\MapGenerator.exe

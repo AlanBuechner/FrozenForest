@@ -112,16 +112,6 @@ struct MeshSection
 	std::vector<Mesh> meshes;
 };
 
-struct Texture
-{
-	int width, height;
-	stbi_uc* data;
-};
-
-struct TextureSection
-{
-	std::vector<Texture> textures;
-};
 
 struct Map
 {
@@ -129,7 +119,6 @@ struct Map
 	ChunkSection chunkSection;
 	TileSection tileSection;
 	MeshSection meshSection;
-	TextureSection textureSection;
 
 };
 
@@ -137,7 +126,6 @@ size_t HeaderAllocationSize(Map& map);
 size_t ChunkAllocationSize(Map& map);
 size_t TileAllocationSize(Map& map);
 size_t MeshAllocationSize(Map& map);
-size_t TextureAllocationSize(Map& map);
 
 size_t MapAllocationSize(Map& map);
 

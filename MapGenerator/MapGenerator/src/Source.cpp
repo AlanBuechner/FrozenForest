@@ -69,12 +69,6 @@ int main(int argc, char** argv)
 
 	map.chunkSection.chunks.push_back(chunk);
 
-	Texture texture;
-	int comp;
-	texture.data = stbi_load("Map/Images/SnowTile.png", &texture.width, &texture.height, &comp, 4);
-
-	map.textureSection.textures.push_back(texture);
-
 	size_t size = 0;
 	byte_t* data = nullptr;
 	CompileMap(map, &data, &size);

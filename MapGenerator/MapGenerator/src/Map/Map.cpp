@@ -79,20 +79,6 @@ size_t MeshAllocationSize(Map& map)
 	return size;
 }
 
-size_t TextureAllocationSize(Map& map)
-{
-	size_t size = 0;
-	size += sizeof(uint32_t); // number of textures
-	size += map.textureSection.textures.size() * sizeof(uint32_t); // texture offset
-	for (auto& tex : map.textureSection.textures)
-	{
-		size += sizeof(uint32_t) * 2; // width and height
-		size += tex.width * tex.height * sizeof(stbi_uc) * 4; // texture data
-	}
-
-	return size;
-}
-
 size_t MapAllocationSize(Map& map)
 {
 	size_t size = 0;
@@ -106,9 +92,6 @@ size_t MapAllocationSize(Map& map)
 
 	// mesh section
 	size += MeshAllocationSize(map);
-
-	// texture section
-	size += TextureAllocationSize(map);
 
 	return size;
 }
@@ -129,9 +112,6 @@ void CompileMap(Map& map, byte_t** data, size_t* size)
 
 	// find size of map allocation and alocate memory
 	offset += MeshAllocationSize(map);
-	map.header.textureSectionOffset = offset;
-
-	offset += TextureAllocationSize(map);
 	*data = (byte_t*)malloc(offset);
 	*size = offset;
 	byte_t* d = *data;
@@ -202,28 +182,6 @@ void CompileMap(Map& map, byte_t** data, size_t* size)
 			*(uint16_t*)(d + meshOffset + (j * sizeof(uint16_t))) = mesh.indices[j];
 		meshOffset += mesh.indices.size() * sizeof(uint16_t);
 		
-	}
-
-	// texture section
-	*(uint32_t*)(d + map.header.textureSectionOffset) = map.textureSection.textures.size(); // number of textures
-	uint32_t* textureLookup = (uint32_t*)(d + map.header.textureSectionOffset + sizeof(uint32_t));
-	uint32_t textureOffset = map.header.textureSectionOffset + sizeof(uint32_t) + (map.textureSection.textures.size() * sizeof(uint32_t));
-	for (uint32_t i = 0; i < map.textureSection.textures.size(); i++)
-	{
-		const Texture& texture = map.textureSection.textures[i];
-
-		textureLookup[i] = textureOffset;
-
-		*(uint32_t*)(d + textureOffset) = texture.width;
-		textureOffset += sizeof(uint32_t);
-		*(uint32_t*)(d + textureOffset) = texture.height;
-		textureOffset += sizeof(uint32_t);
-
-		for (uint32_t j = 0; j < texture.width * texture.height * 4; j++)
-		{
-			*(stbi_uc*)(d + textureOffset) = texture.data[j];
-			textureOffset += sizeof(stbi_uc);
-		}
 	}
 
 	

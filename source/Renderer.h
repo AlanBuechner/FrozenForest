@@ -5,6 +5,11 @@
 #include "Math.h"
 #include "Map.h"
 
+#define SW (256)
+#define SH (192)
+
+#define PLAYER_SPRITE 0
+
 namespace Renderer
 {
 	void Init();
@@ -19,6 +24,8 @@ namespace Renderer
 
 	void DrawChunk(const Chunk& chunk, const Math::Vec3& pos);
 
+	void DrawSprite(int x, int y, int id);
+	void DrawAnimatedSprite(int x, int y, int id, uint16_t frame);
 }
 
 #endif

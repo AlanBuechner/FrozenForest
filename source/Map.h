@@ -75,14 +75,8 @@ inline const void* GetChunkSection() { return (void*)((size_t)map_bin + (size_t)
 inline const void* GetTileSection() { return (void*)((size_t)map_bin + (size_t)GetHeader().tileSectionOffset); }
 inline const void* GetMeshSection() { return (void*)((size_t)map_bin + (size_t)GetHeader().meshSectionOffset); }
 inline const uint32_t* GetMeshLookupSection() { return (uint32_t*)((size_t)map_bin + (size_t)GetHeader().meshSectionOffset + sizeof(uint32_t)); }
-inline const void* GetTextureSection() { return (void*)((size_t)map_bin + (size_t)GetHeader().textureSectionOffset); }
-inline const uint32_t* GetTextureLookupSection() { return(uint32_t*)((size_t)map_bin + (size_t)GetHeader().textureSectionOffset + sizeof(uint32_t)); }
 
 inline size_t MapAllicationSize() { return map_bin_size; }
-
-inline uint32_t GetNumberOfTextures() { return *(uint32_t*)GetTextureSection(); }
-inline Texture* GetTextureLocation(uint32_t textureID) { return (Texture*)((size_t)map_bin + (size_t)GetTextureLookupSection()[textureID]); }
-Texture GetTexture(uint32_t textureID);
 
 inline uint32_t GetNumberOfMeshes() { return *(uint32_t*)GetMeshSection(); }
 inline Mesh* GetMeshLocation(uint32_t meshID) { return (Mesh*)((size_t)map_bin + (size_t)GetMeshLookupSection()[meshID]); }

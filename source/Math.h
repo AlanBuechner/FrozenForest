@@ -11,8 +11,7 @@ namespace Math
 		inline Vec3 operator+(const Vec3& other) { return {x+other.x, y + other.y, z + other.z}; }
 		inline Vec3 operator-(const Vec3& other) { return {x - other.x, y - other.y, z - other.z}; }
 		inline Vec3 operator*(const float other) { return {x * other, y * other, z * other}; }
-		inline Vec3 operator+=(const Vec3& other) { return (*this = *this + other); }
-
+		inline Vec3& operator+=(const Vec3& other) { return (*this = *this + other); }
 
 		float x = 0, y = 0, z = 0;
 	};
