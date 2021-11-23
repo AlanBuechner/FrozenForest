@@ -202,29 +202,52 @@ Map LoadMap(const rapidjson::Value& value)
 
 			// add in error checking for layers, should always be only 3 layers 
 			auto layers = chunks[c]["Layers"].GetArray(); 
-			for (int l = 0; l < layers.Size(); l++)
+			if (layers.Size() == 3)
 			{
-				auto tiles = chunks[c]["Layers"].GetArray(); 
-				for (int t = 0; t < layers[l].Size(); t++)
+				for (int l = 0; l < layers.Size(); l++)
 				{
-					JSON_READ(tiles[t], chunk.layers[l].tiles[t / CHUNK_SIZE][t % CHUNK_SIZE]); 
-				}
+					auto tiles = chunks[c]["Layers"].GetArray(); 
+					for (int t = 0; t < layers[l].Size(); t++)
+					{
+						JSON_READ(tiles[t], chunk.layers[l].tiles[t / CHUNK_SIZE][t % CHUNK_SIZE]); 
+					}
 
-				auto height = layers[l]["Height"].GetArray(); 
-				for (int h = 0; h < height.Size(); h++)
-				{
-					JSON_READ(height[h], chunk.layers[l].height[h / CHUNK_SIZE][h % CHUNK_SIZE]); 
+					auto height = layers[l]["Height"].GetArray(); 
+					for (int h = 0; h < height.Size(); h++)
+					{
+						JSON_READ(height[h], chunk.layers[l].height[h / CHUNK_SIZE][h % CHUNK_SIZE]); 
+					}
 				}
-
 			}
 		}
 	}
 
 	// stuff for Tiles 
+	if (value.HasMember("Tile"))
+	{
+		Tile tile; 
+		JSON_READ(value, tile.meshId); 
+		JSON_READ(value, tile.rotation); 
+	}
 
 	// mesh 
+	if (value.HasMember("Mesh"))
+	{
+		Mesh mesh; 
+		JSON_READ(value, mesh.quads); 
 
-	// these don't exist yet 
+		for (int v = 0; v < mesh.vertices.size(); v++)
+		{
+		//		for all of the positions (x, y, and z) 
+		//		for all of the uvs (x and y)
+		}
+		//JSON_READ(value, mesh.vertices); 
+		 
+		// not entirely sure on this one 
+		//JSON_READ(value, mesh.indices); 
+	}
+
+	// these don't exist yet so do later 
 	// textures 
 
 	// interactable items 
