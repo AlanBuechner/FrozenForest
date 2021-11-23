@@ -18,4 +18,6 @@ namespace json
 
 	bool Get(const rapidjson::Value& value, const std::string& name, std::vector<std::string>& data);
 	bool Get(const rapidjson::Value& value, const std::string& name, std::vector<int>& data);
+
+	uint32_t uintArray[]; 
 }

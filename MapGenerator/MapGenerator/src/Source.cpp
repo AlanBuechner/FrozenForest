@@ -69,6 +69,11 @@ int main(int argc, char** argv)
 
 	map.chunkSection.chunks.push_back(chunk);
 
+	// load in file from rapidjson 
+	//json::Load(); 
+
+	//Map m = LoadMap(); 
+
 	size_t size = 0;
 	byte_t* data = nullptr;
 	CompileMap(map, &data, &size);
