@@ -157,7 +157,8 @@
     <ClInclude Include="src\Map\Map.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="src\Map\test.txt" />
+    <Text Include="src\JsonFiles\map.txt" />
+    <Text Include="src\JsonFiles\test.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

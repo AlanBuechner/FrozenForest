@@ -71,7 +71,8 @@ int main(int argc, char** argv)
 
 	// load in file from rapidjson 
 	rapidjson::Document document;
-	bool success = json::Load("test.txt", document);
+	bool success = json::Load("MapGenerator/src/JsonFiles/test.txt", document);
+	bool success = json::Load("MapGenerator/src/JsonFiles/map.txt", document);
 	//assert(success); 
 	//LoadMap(document); 
 

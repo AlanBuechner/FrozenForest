@@ -37,6 +37,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="src\Map\test.txt" />
+    <Text Include="src\JsonFiles\test.txt" />
+    <Text Include="src\JsonFiles\map.txt" />
   </ItemGroup>
 </Project>
