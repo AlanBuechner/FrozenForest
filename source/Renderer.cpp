@@ -187,7 +187,7 @@ namespace Renderer
 
 	void DrawChunk(const Chunk& chunk, const Math::Vec3& pos)
 	{
-		Math::Vec3 p = { (chunk.x*CHUNK_SIZE) - pos.x, pos.y, (chunk.y*CHUNK_SIZE)-pos.z };
+		Math::Vec3 p = { (chunk.x*CHUNK_SIZE) - pos.x, pos.y, -(chunk.y*CHUNK_SIZE)-pos.z };
 		for(uint8_t c = 0; c < 3; c++)
 		{
 			for(uint8_t x = 0; x < CHUNK_SIZE; x++)

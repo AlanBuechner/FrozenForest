@@ -2,7 +2,10 @@
 #include "Input.h"
 #include "Time.h"
 
+#include "Map.h"
+
 #include <math.h>
+#include <stdio.h>
 
 void Entity::update()
 {
@@ -33,6 +36,25 @@ void Entity::update()
 			dir = Math::Vec3{0, 0, 1};
 			state = 2;
 		}
+
+		Math::Vec3 np = position + dir;
+		uint32_t nx = (int)np.x / CHUNK_SIZE;
+		uint32_t ny = (int)np.z / CHUNK_SIZE;
+		uint32_t x = (int)position.x / CHUNK_SIZE;
+		uint32_t y = (int)position.z / CHUNK_SIZE;
+		if(dir != Math::Vec3{0, 0, 0} && (nx != x || ny != y))
+		{
+			currentChunk = GetCurrentChunk(nx, ny);
+			surroundingChunks[0] = GetCurrentChunk(nx+1, ny);
+			surroundingChunks[1] = GetCurrentChunk(nx-1, ny);
+			surroundingChunks[2] = GetCurrentChunk(nx, ny+1);
+			surroundingChunks[3] = GetCurrentChunk(nx, ny-1);
+			surroundingChunks[4] = GetCurrentChunk(nx+1, ny+1);
+			surroundingChunks[5] = GetCurrentChunk(nx-1, ny-1);
+			surroundingChunks[6] = GetCurrentChunk(nx+1, ny-1);
+			surroundingChunks[7] = GetCurrentChunk(nx-1, ny+1);
+		}
+			
 		
 		oldPosition = position;
 		speed = (Input::IsKeyDown(Key::B) ? runSpeed : walkSpeed);

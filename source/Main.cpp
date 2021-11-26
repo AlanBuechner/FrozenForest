@@ -17,7 +17,6 @@ int main()
 	Renderer::Init();
 	Console::Init();
 
-
 	Camera cam;
 	cam.Position = Math::Vec3{0,7,1};
 	cam.Dir = -cam.Position;
@@ -26,8 +25,6 @@ int main()
 
 	Entity player;
 	player.position = Math::Vec3{4, 0, -4};
-
-	Console::SetPrintString("hello world!");
 
 	while(1)
 	{
@@ -47,7 +44,10 @@ int main()
 		Renderer::BeginFrame();
 
 		// 3d renderering
-		Renderer::DrawChunk(GetChunk(0), player.position);
+		Renderer::DrawChunk(GetChunk(player.currentChunk), player.position);
+		for(uint8_t i = 0; i < 8; i++)
+			if(player.surroundingChunks[i] != UINT32_MAX)
+				Renderer::DrawChunk(GetChunk(player.surroundingChunks[i]), player.position);
 
 		// 2d renderering
 		Renderer::DrawAnimatedSprite(SW/2-16, SH/2-30, PLAYER_SPRITE, player.state*3 + player.frame);

@@ -210,13 +210,33 @@ void LoadMap(const rapidjson::Value& value, Map& map)
 				for (uint32_t l = 0; l < layers.Size(); l++)
 				{
 					auto tiles = layers[l]["Tiles"].GetArray();
+					if(tiles.Size() == 0)
+						for (uint32_t t = 0; t < CHUNK_SIZE * CHUNK_SIZE; t++)
+							chunk.layers[l].tiles[t / CHUNK_SIZE][t % CHUNK_SIZE] = 0;
+					else
 					for (uint32_t t = 0; t < tiles.Size(); t++)
 						chunk.layers[l].tiles[t / CHUNK_SIZE][t % CHUNK_SIZE] = tiles[t].GetInt(); 
 
 					auto height = layers[l]["Height"].GetArray(); 
+					if(height.Size() == 0)
+						for (uint32_t h = 0; h < CHUNK_SIZE * CHUNK_SIZE; h++)
+							chunk.layers[l].height[h / CHUNK_SIZE][h % CHUNK_SIZE] = 0;
+					else
 					for (uint32_t h = 0; h < height.Size(); h++)
-						height[h], chunk.layers[l].height[h / CHUNK_SIZE][h % CHUNK_SIZE] = height[h].GetInt(); 
+						chunk.layers[l].height[h / CHUNK_SIZE][h % CHUNK_SIZE] = height[h].GetInt(); 
 				}
+			}
+
+			if (chunks[c].HasMember("Collision") && chunks[c]["Collision"].IsArray())
+			{
+				auto collision = chunks[c]["Collision"].GetArray();
+				if (collision.Size() == 0)
+					for (uint32_t i = 0; i < CHUNK_SIZE * CHUNK_SIZE; i++)
+						chunk.collisonMask[i / CHUNK_SIZE][i % CHUNK_SIZE] = 0;
+				else
+					for (uint32_t i = 0; i < collision.Size(); i++)
+						chunk.collisonMask[i / CHUNK_SIZE][i % CHUNK_SIZE] = collision[i].GetInt();
+
 			}
 
 			map.chunkSection.chunks.push_back(chunk);
