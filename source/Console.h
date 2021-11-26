@@ -12,6 +12,8 @@ namespace Console
     void SetPrintString(const std::string& str);
     void Update();
     bool IsPrinting();
+
+    bool IsScreenClear();
 }
 
 

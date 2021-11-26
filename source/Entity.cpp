@@ -1,6 +1,7 @@
 #include "Entity.h"
 #include "Input.h"
 #include "Time.h"
+#include "Console.h"
 
 #include "Map.h"
 
@@ -39,6 +40,8 @@ void Entity::update()
 
 		if(dir != Math::Vec3{0, 0, 0})
 		{
+			Console::Clear();
+
 			Math::Vec3 np = position + dir;
 			uint32_t nx = (int)np.x / CHUNK_SIZE;
 			uint32_t ny = (int)np.z / CHUNK_SIZE;
@@ -52,10 +55,9 @@ void Entity::update()
 
 			Math::Vec3 tile = GetTileInFront();
 			uint8_t cx = (uint8_t)tile.x % CHUNK_SIZE, cy = (uint8_t)-tile.z % CHUNK_SIZE;
-
-			iprintf("%d, %d\n", cx, cy);
-
-			if(GetChunk(newChunk).collisonMask[CHUNK_SIZE - 1 - cy][cx] != 0)
+			
+			Collision::CollisionData& collisionData = Collision::GetCollisionData(GetChunk(newChunk).collisonMask[CHUNK_SIZE - 1 - cy][cx]);
+			if(!collisionData.walkable)
 				dir = Math::Vec3{0, 0, 0};
 			else if(newChunk != currentChunk)
 			{
@@ -70,13 +72,13 @@ void Entity::update()
 				surroundingChunks[7] = GetCurrentChunk(nx-1, ny+1);
 			}
 
-			
-
+			if(dir != Math::Vec3{0, 0, 0})
+			{
+				oldPosition = position;
+				speed = (Input::IsKeyDown(Key::B) ? runSpeed : walkSpeed);
+			}
 		}
 			
-		
-		oldPosition = position;
-		speed = (Input::IsKeyDown(Key::B) ? runSpeed : walkSpeed);
 	}
 	else
 	{
@@ -105,4 +107,20 @@ Math::Vec3 Entity::GetTileInFront()
 {
 	Math::Vec3 dir{(float)(-(state-2)%2), 0, (float)((state-1)%2)};
 	return position + dir;
+}
+
+Collision::CollisionData& Entity::GetForwordCollision()
+{
+	Math::Vec3 tile = GetTileInFront();
+	uint32_t newChunk = currentChunk;
+	uint32_t cx = (int)tile.x / CHUNK_SIZE;
+	uint32_t cy = (int)tile.z / CHUNK_SIZE;
+	if(cx != (uint32_t)position.x / CHUNK_SIZE || cy != (uint32_t)position.z / CHUNK_SIZE)
+		newChunk = GetCurrentChunk(cx, cy);
+
+	uint8_t tx = (uint8_t)tile.x % CHUNK_SIZE, ty = (uint8_t)-tile.z % CHUNK_SIZE;
+	uint32_t collisionId = GetChunk(newChunk).collisonMask[CHUNK_SIZE - 1 - ty][tx];
+
+	return Collision::GetCollisionData(collisionId);
+
 }

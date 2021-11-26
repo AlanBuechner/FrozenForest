@@ -15,6 +15,10 @@ namespace Console
 	float nextPrintTime;
 	float currentTime;
 	uint32_t currentIndex = 0;
+
+	bool clearScreen = false;
+	bool screenClear = true;
+
 	void Init()
 	{
 		consoleDemoInit();
@@ -22,7 +26,7 @@ namespace Console
 
 	void Clear()
 	{
-		consoleClear();
+		clearScreen = true;
 	}
 
 	bool IsPrinting()
@@ -36,10 +40,18 @@ namespace Console
 		nextPrintTime = 0;
 		currentIndex = 0;
 		currentTime = 0;
+		clearScreen = false;
+		screenClear = false;
 	}
 
 	void Update()
 	{
+
+		if(clearScreen)
+		{
+			consoleClear();
+			screenClear = true;
+		}
 
 		if (IsPrinting())
 		{
@@ -58,10 +70,19 @@ namespace Console
 
 			if (Input::IsKeyPressed(Key::A))
 			{
-				Clear();
+				consoleClear();
 				iprintf("%s", print.c_str());
 				print = "";
 			}
 		}
+		else if(Input::IsKeyPressed(Key::A))
+		{
+			Clear();
+		}
+	}
+
+	bool IsScreenClear()
+	{
+		return screenClear;
 	}
 }

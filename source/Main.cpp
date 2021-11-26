@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "Map.h"
 #include "Entity.h"
+#include "Collision.h"
 
 #include <nds.h>
 #include <stdio.h>
@@ -14,6 +15,7 @@
 
 int main()
 {
+	Collision::Init();
 	Renderer::Init();
 	Console::Init();
 
@@ -28,14 +30,20 @@ int main()
 
 	while(1)
 	{
-		// update
-		Console::Update();
+		// update input
 		Input::Update();
+		// update console
+		Console::Update();
 
-		if(Input::IsKeyPressed(Key::A) && player.dir == Math::Vec3{0,0,0})
+		// update player
+		if(Input::IsKeyPressed(Key::A))
 		{
-			Math::Vec3 dir{(float)(-(player.state-2)%2), 0, (float)((player.state-1)%2)};
-			Math::Vec3 tile = player.position + dir;
+			if(Console::IsScreenClear() && player.dir == Math::Vec3{0,0,0})
+			{
+				Collision::CollisionData& c = player.GetForwordCollision();
+				if(c.interactCallback != nullptr)
+					c.interactCallback();
+			}
 		}
 		else if(!Console::IsPrinting())
 			player.update();

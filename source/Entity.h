@@ -1,6 +1,7 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 #include "Math.h"
+#include "Collision.h"
 #include <cstdint>
 
 class Entity
@@ -25,6 +26,7 @@ public:
 	void update();
 
 	Math::Vec3 GetTileInFront();
+	Collision::CollisionData& GetForwordCollision();
 
 };
 
