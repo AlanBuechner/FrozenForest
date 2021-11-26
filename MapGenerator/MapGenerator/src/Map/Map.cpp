@@ -2,6 +2,8 @@
 #include "../Json.h"
 #include "rapidjson.h"
 
+#include <algorithm>
+
 typedef short int v16;
 #define floattov16(n)        ((v16)((n) * (1 << 12))) /*!< \brief convert float to v16 */
 
@@ -10,20 +12,20 @@ typedef short t16;
 
 
 struct Vec3v16
-		{
-			v16 x, y, z;
-		};
+{
+	v16 x, y, z;
+};
 
-		struct Vec2t16
-		{
-			t16 x, y;
-		};
+struct Vec2t16
+{
+	t16 x, y;
+};
 
-		struct Vert
-		{
-			Vec3v16 position;
-			Vec2t16 uv;
-		};
+struct Vert
+{
+	Vec3v16 position;
+	Vec2t16 uv;
+};
 
 template <typename T>
 T swap_endian(T u)
@@ -188,10 +190,10 @@ void CompileMap(Map& map, byte_t** data, size_t* size)
 
 }
 
-Map LoadMap(const rapidjson::Value& value, Map& map)
+void LoadMap(const rapidjson::Value& value, Map& map)
 {
 	// read map into data structure
-	// read in chunk section
+	// chunks
 	if (value.HasMember("Chunks") && value["Chunks"].IsArray())
 	{
 		auto chunks = value["Chunks"].GetArray(); 
@@ -221,7 +223,7 @@ Map LoadMap(const rapidjson::Value& value, Map& map)
 		}
 	}
 
-	// stuff for Tiles 
+	// tiles
 	if (value.HasMember("Tiles") && value["Tiles"].IsArray())
 	{
 		auto tiles = value["Tiles"].GetArray();
@@ -258,12 +260,23 @@ Map LoadMap(const rapidjson::Value& value, Map& map)
 			map.meshSection.meshes.push_back(mesh);
 		}
 	}
+}
 
+void OptimizeMap(Map& map)
+{
+	uint32_t xExtent = 0;
+	for (auto& c : map.chunkSection.chunks)
+	{
+		if (c.x > xExtent)
+			xExtent = c.x;
+	}
 
-	// sort any data that needs to be sorted 
+	std::sort(map.chunkSection.chunks.begin(), map.chunkSection.chunks.end(), [&xExtent](Chunk a, Chunk b)
+		{
+			int ai = a.y * xExtent + a.x;
+			int bi = b.y * xExtent + b.x;
+			return ai < bi;
+		}
+	);
 
-
-
-	
-	return map;
 }

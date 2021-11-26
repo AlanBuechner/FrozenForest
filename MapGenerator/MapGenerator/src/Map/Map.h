@@ -113,7 +113,6 @@ struct MeshSection
 	std::vector<Mesh> meshes;
 };
 
-
 struct Map
 {
 	Header header;
@@ -131,4 +130,5 @@ size_t MapAllocationSize(Map& map);
 
 void CompileMap(Map& map, byte_t** data, size_t* size);
 
-Map LoadMap(const rapidjson::Value& value, Map& map);
+void LoadMap(const rapidjson::Value& value, Map& map);
+void OptimizeMap(Map& map);

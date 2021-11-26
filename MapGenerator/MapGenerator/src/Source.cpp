@@ -42,21 +42,8 @@ int main(int argc, char** argv)
 
 	// load in file from rapidjson 
 	IterateDirectory(map, "Map/");
-	
-	Mesh mesh;
-	mesh.quads = true;
-	mesh.vertices = std::vector<Vertex>{
-		{ {-0.5f, 0.0f, -0.5f}, {0.0f, 0.0f} },
-		{ { 0.5f, 0.0f, -0.5f}, {1.0f, 0.0f} },
-		{ { 0.5f, 0.0f,  0.5f}, {0.0f, 1.0f} },
-		{ {-0.5f, 0.0f,  0.5f}, {1.0f, 1.0f} },
-	};
 
-	mesh.indices = std::vector<uint16_t> {
-		0,1,2,3
-	};
-
-	map.meshSection.meshes.push_back(mesh);
+	OptimizeMap(map);
 
 	size_t size = 0;
 	byte_t* data = nullptr;
