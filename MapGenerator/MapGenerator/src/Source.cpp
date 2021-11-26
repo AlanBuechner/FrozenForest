@@ -82,9 +82,7 @@ int main(int argc, char** argv)
 	CompileMap(map, &data, &size);
 
 	std::ofstream out("data/map.bin", std::ios::binary);
-
 	out.write((const char*)data, size);
-
 	out.close();
 
 	return 0;

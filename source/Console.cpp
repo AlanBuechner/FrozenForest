@@ -12,7 +12,6 @@
 namespace Console
 {
 	std::string print;
-	std::string prevPrint;
 	float nextPrintTime;
 	float currentTime;
 	uint32_t currentIndex = 0;
@@ -28,7 +27,7 @@ namespace Console
 
 	bool IsPrinting()
 	{
-		return print.empty();
+		return !print.empty();
 	}
 
 	void SetPrintString(const std::string& str)
@@ -42,7 +41,7 @@ namespace Console
 	void Update()
 	{
 
-		if (!IsPrinting())
+		if (IsPrinting())
 		{
 			if (currentIndex <= print.size())
 			{

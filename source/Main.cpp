@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 int main()
 {
@@ -33,7 +34,14 @@ int main()
 		// update
 		Console::Update();
 		Input::Update();
-		player.update();
+
+		if(Input::IsKeyPressed(Key::A) && player.dir == Math::Vec3{0,0,0})
+		{
+			Math::Vec3 dir{(float)(-(player.state-2)%2), 0, (float)((player.state-1)%2)};
+			Math::Vec3 tile = player.position + dir;
+		}
+		else if(!Console::IsPrinting())
+			player.update();
 
 		// render
 		Renderer::BeginFrame();

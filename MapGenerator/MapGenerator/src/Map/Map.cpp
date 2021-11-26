@@ -1,4 +1,6 @@
 #include "Map.h"
+#include "../Json.h"
+#include "rapidjson.h"
 
 typedef short int v16;
 #define floattov16(n)        ((v16)((n) * (1 << 12))) /*!< \brief convert float to v16 */
@@ -252,7 +254,45 @@ Map LoadMap(const rapidjson::Value& value)
 
 	// interactable items 
 
+	if (value.HasMember("Chunks") && value["Chunks"].IsArray())
+	{
+		auto chunks = value["Chunks"].GetArray();
+		for (int c = 0; c < chunks.Size(); c++)
+		{
+			Chunk chunk;
+			JSON_READ(chunks[c]["x"], chunk.x);
+			JSON_READ(chunks[c]["y"], chunk.y);
+
+			auto layers = chunks[c]["Layers"].GetArray();
+			for (int l = 0; l < layers.Size(); l++)
+			{
+				auto tiles = layers[l]["Tiles"].GetArray();
+				for (int t = 0; t < tiles.Size(); t++)
+					JSON_READ(tiles[t], chunk.layers[l].tiles[t / CHUNK_SIZE][t % CHUNK_SIZE]);
+
+				auto height = layers[l]["Height"].GetArray();
+				for (int h = 0; h < height.Size(); h++)
+					JSON_READ(height[h], chunk.layers[l].height[h / CHUNK_SIZE][h % CHUNK_SIZE]);
+				
+			}
+		}
+	}
+
+	// tiles
+
+
+	// meshes
+
+
+	// textuers
+
+
+	// interactable items
+
+
 	// sort any data that needs to be sorted 
+
+
 
 	
 	return map;
