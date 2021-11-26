@@ -188,106 +188,76 @@ void CompileMap(Map& map, byte_t** data, size_t* size)
 
 }
 
-Map LoadMap(const rapidjson::Value& value)
+Map LoadMap(const rapidjson::Value& value, Map& map)
 {
-	Map map;
-
-	// read map into data structure (chunk section)
+	// read map into data structure
+	// read in chunk section
 	if (value.HasMember("Chunks") && value["Chunks"].IsArray())
 	{
 		auto chunks = value["Chunks"].GetArray(); 
-		for (int c = 0; c < chunks.Size(); c++)
+		for (uint32_t c = 0; c < chunks.Size(); c++)
 		{
 			Chunk chunk; 
-			JSON_READ(chunks[c]["x"], chunk.x);
-			JSON_READ(chunks[c]["y"], chunk.y);
+			json::Get(chunks[c], "x", chunk.x);
+			json::Get(chunks[c], "y", chunk.y);
 
 			// add in error checking for layers, should always be only 3 layers 
 			auto layers = chunks[c]["Layers"].GetArray(); 
 			if (layers.Size() == 3)
 			{
-				for (int l = 0; l < layers.Size(); l++)
+				for (uint32_t l = 0; l < layers.Size(); l++)
 				{
-					auto tiles = chunks[c]["Layers"].GetArray(); 
-					for (int t = 0; t < layers[l].Size(); t++)
-					{
-						JSON_READ(tiles[t], chunk.layers[l].tiles[t / CHUNK_SIZE][t % CHUNK_SIZE]); 
-					}
+					auto tiles = layers[l]["Tiles"].GetArray();
+					for (uint32_t t = 0; t < tiles.Size(); t++)
+						chunk.layers[l].tiles[t / CHUNK_SIZE][t % CHUNK_SIZE] = tiles[t].GetInt(); 
 
 					auto height = layers[l]["Height"].GetArray(); 
-					for (int h = 0; h < height.Size(); h++)
-					{
-						JSON_READ(height[h], chunk.layers[l].height[h / CHUNK_SIZE][h % CHUNK_SIZE]); 
-					}
+					for (uint32_t h = 0; h < height.Size(); h++)
+						height[h], chunk.layers[l].height[h / CHUNK_SIZE][h % CHUNK_SIZE] = height[h].GetInt(); 
 				}
 			}
+
+			map.chunkSection.chunks.push_back(chunk);
 		}
 	}
 
 	// stuff for Tiles 
-	if (value.HasMember("Tile"))
+	if (value.HasMember("Tiles") && value["Tiles"].IsArray())
 	{
-		Tile tile; 
-		JSON_READ(value, tile.meshId); 
-		JSON_READ(value, tile.rotation); 
+		auto tiles = value["Tiles"].GetArray();
+		for (uint32_t t = 0; t < tiles.Size(); t++)
+		{
+			Tile tile;
+			json::Get(tiles[t], "MeshID", tile.meshId);
+			json::Get(tiles[t], "Rotation", tile.rotation);
+
+			map.tileSection.tiles.push_back(tile);
+		}
 	}
 
 	// mesh 
-	if (value.HasMember("Mesh"))
+	if (value.HasMember("Meshes") && value["Meshes"].IsArray())
 	{
-		Mesh mesh; 
-		JSON_READ(value, mesh.quads); 
-
-		for (int v = 0; v < mesh.vertices.size(); v++)
+		auto meshes = value["Meshes"].GetArray();
+		for (uint32_t m = 0; m < meshes.Size(); m++)
 		{
-		//		for all of the positions (x, y, and z) 
-		//		for all of the uvs (x and y)
-		}
-		//JSON_READ(value, mesh.vertices); 
-		 
-		// not entirely sure on this one 
-		//JSON_READ(value, mesh.indices); 
-	}
 
-	// these don't exist yet so do later 
-	// textures 
+			Mesh mesh;
+			json::Get(meshes[m], "Quads", mesh.quads);
 
-	// interactable items 
+			auto verts = meshes[m]["Vertices"].GetArray();
+			mesh.vertices.resize(verts.Size() / 5);
+			for (uint32_t v = 0; v < verts.Size(); v++)
+				((float*)mesh.vertices.data())[v] = verts[v].GetFloat();
+			
+			auto indices = meshes[m]["Indices"].GetArray();
+			mesh.indices.resize(indices.Size());
+			for (uint32_t i = 0; i < indices.Size(); i++)
+				mesh.indices[i] = indices[i].GetInt();
 
-	if (value.HasMember("Chunks") && value["Chunks"].IsArray())
-	{
-		auto chunks = value["Chunks"].GetArray();
-		for (int c = 0; c < chunks.Size(); c++)
-		{
-			Chunk chunk;
-			JSON_READ(chunks[c]["x"], chunk.x);
-			JSON_READ(chunks[c]["y"], chunk.y);
-
-			auto layers = chunks[c]["Layers"].GetArray();
-			for (int l = 0; l < layers.Size(); l++)
-			{
-				auto tiles = layers[l]["Tiles"].GetArray();
-				for (int t = 0; t < tiles.Size(); t++)
-					JSON_READ(tiles[t], chunk.layers[l].tiles[t / CHUNK_SIZE][t % CHUNK_SIZE]);
-
-				auto height = layers[l]["Height"].GetArray();
-				for (int h = 0; h < height.Size(); h++)
-					JSON_READ(height[h], chunk.layers[l].height[h / CHUNK_SIZE][h % CHUNK_SIZE]);
-				
-			}
+			map.meshSection.meshes.push_back(mesh);
 		}
 	}
-
-	// tiles
-
-
-	// meshes
-
-
-	// textuers
-
-
-	// interactable items
 
 
 	// sort any data that needs to be sorted 

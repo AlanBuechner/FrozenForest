@@ -1,9 +1,36 @@
 #include <iostream>
 #include <fstream>
 #include <filesystem>
+
 #include "Map\Map.h"
 
 #include <stb_image.h>
+
+void IterateDirectory(Map& map, std::filesystem::path path)
+{
+	for (auto& p : std::filesystem::directory_iterator(path))
+	{
+		auto& path = p.path();
+
+		if (p.is_directory())
+		{
+			IterateDirectory(map, path);
+		}
+		else if(path.extension().string() == ".json")
+		{
+			rapidjson::Document document;
+			if (json::Load(path.string(), document))
+				LoadMap(document, map);
+			else
+				std::cout << "could not load file \"" << path.string() << "\" not a valid josn file" << std::endl;
+		}
+		else
+		{
+			std::cout << "could not read file \"" << path.string() << "\" not a json file" << std::endl;
+		}
+
+	}
+}
 
 
 int main(int argc, char** argv)
@@ -12,6 +39,9 @@ int main(int argc, char** argv)
 	std::cout << std::filesystem::current_path() << std::endl;
 
 	Map map;
+
+	// load in file from rapidjson 
+	IterateDirectory(map, "Map/");
 	
 	Mesh mesh;
 	mesh.quads = true;
@@ -27,55 +57,6 @@ int main(int argc, char** argv)
 	};
 
 	map.meshSection.meshes.push_back(mesh);
-
-	map.tileSection.tiles.push_back({0, 0});
-	map.tileSection.tiles.push_back({0, 1});
-	map.tileSection.tiles.push_back({0, 2});
-	map.tileSection.tiles.push_back({0, 3});
-
-	Chunk chunk;
-	chunk.x = 0;
-	chunk.y = 0;
-
-	for (uint8_t x = 0; x < CHUNK_SIZE; x++)
-		for (uint8_t y = 0; y < CHUNK_SIZE; y++)
-			chunk.layers[0].tiles[x][y] = ((x+(y%2)) % 2);
-
-	for (uint8_t x = 0; x < CHUNK_SIZE; x++)
-		for (uint8_t y = 0; y < CHUNK_SIZE; y++)
-			chunk.layers[0].height[x][y] = 0;
-
-	/*chunk.layers[0].height[0][0] = 1;
-	chunk.layers[0].height[3][7] = 1;
-	chunk.layers[0].height[5][3] = 1;
-	chunk.layers[0].height[1][6] = 1;
-	chunk.layers[0].height[9][6] = 1;
-	chunk.layers[0].height[5][4] = 1;*/
-
-	for (uint8_t c = 1; c < 3; c++)
-		for (uint8_t x = 0; x < CHUNK_SIZE; x++)
-			for (uint8_t y = 0; y < CHUNK_SIZE; y++)
-				chunk.layers[c].tiles[x][y] = 0;
-
-	for (uint8_t x = 0; x < CHUNK_SIZE; x++)
-		for (uint8_t y = 0; y < CHUNK_SIZE; y++)
-			chunk.collisonMask[x][y] = 0xcccccccc;
-
-	map.chunkSection.chunks.push_back(chunk);
-
-	for (uint8_t x = 0; x < CHUNK_SIZE; x++)
-		for (uint8_t y = 0; y < CHUNK_SIZE; y++)
-			chunk.layers[0].tiles[x][y] = ((x + (y % 2)+1) % 2);
-
-	map.chunkSection.chunks.push_back(chunk);
-
-	// load in file from rapidjson 
-	rapidjson::Document document;
-	bool success = json::Load("MapGenerator/src/JsonFiles/test.txt", document);
-	bool success = json::Load("MapGenerator/src/JsonFiles/map.txt", document);
-	//assert(success); 
-	//LoadMap(document); 
-
 
 	size_t size = 0;
 	byte_t* data = nullptr;

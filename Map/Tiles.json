@@ -1,0 +1,8 @@
+{
+    "Tiles":[
+        {"MeshID": 0, "Rotation": 0},
+        {"MeshID": 0, "Rotation": 1},
+        {"MeshID": 0, "Rotation": 2},
+        {"MeshID": 0, "Rotation": 3}
+    ]
+}

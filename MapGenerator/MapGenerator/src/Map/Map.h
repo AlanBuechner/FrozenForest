@@ -131,4 +131,4 @@ size_t MapAllocationSize(Map& map);
 
 void CompileMap(Map& map, byte_t** data, size_t* size);
 
-Map LoadMap(const rapidjson::Value& value);
+Map LoadMap(const rapidjson::Value& value, Map& map);

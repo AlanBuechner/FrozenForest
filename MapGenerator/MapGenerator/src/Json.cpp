@@ -22,9 +22,8 @@ namespace json
 	bool Get(const rapidjson::Value& value, const std::string& name, int& data)
 	{
 		if (value.HasMember(name.c_str()) == false || value[name.c_str()].IsInt() == false)
-		{
 			return false;
-		}
+		
 
 		data = value[name.c_str()].GetInt();
 
@@ -34,9 +33,7 @@ namespace json
 	bool Get(const rapidjson::Value& value, const std::string& name, float& data)
 	{
 		if (value.HasMember(name.c_str()) == false || value[name.c_str()].IsNumber() == false)
-		{
 			return false;
-		}
 
 		data = value[name.c_str()].GetFloat();
 
@@ -46,9 +43,7 @@ namespace json
 	bool Get(const rapidjson::Value& value, const std::string& name, bool& data)
 	{
 		if (value.HasMember(name.c_str()) == false || value[name.c_str()].IsBool() == false)
-		{
 			return false;
-		}
 
 		data = value[name.c_str()].GetBool();
 
@@ -58,10 +53,8 @@ namespace json
 	bool Get(const rapidjson::Value& value, const std::string& name, std::string& data)
 	{
 		if (value.HasMember(name.c_str()) == false || value[name.c_str()].IsString() == false)
-		{
 			return false;
-		}
-
+		
 		data = value[name.c_str()].GetString();
 
 		return true;
@@ -70,9 +63,9 @@ namespace json
 	bool Get(const rapidjson::Value& value, const std::string& name, uint32_t& data)
 	{
 		if (value.HasMember(name.c_str()) == false || value[name.c_str()].IsNumber() == false)
-		{
 			return false; 
-		}
+		
+		data = value[name.c_str()].GetInt();
 
 		return true;
 	}
@@ -80,9 +73,9 @@ namespace json
 	bool Get(const rapidjson::Value& value, const std::string& name, uint16_t& data)
 	{
 		if (value.HasMember(name.c_str()) == false || value[name.c_str()].IsNumber() == false)
-		{
 			return false;
-		}
+		
+		data = value[name.c_str()].GetInt();
 
 		return true;
 	}
@@ -90,9 +83,9 @@ namespace json
 	bool Get(const rapidjson::Value& value, const std::string& name, uint8_t& data)
 	{
 		if (value.HasMember(name.c_str()) == false || value[name.c_str()].IsNumber() == false)
-		{
 			return false;
-		}
+		
+		data = value[name.c_str()].GetInt();
 
 		return true;
 	}
