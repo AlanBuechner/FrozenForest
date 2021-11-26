@@ -37,22 +37,41 @@ void Entity::update()
 			state = 2;
 		}
 
-		Math::Vec3 np = position + dir;
-		uint32_t nx = (int)np.x / CHUNK_SIZE;
-		uint32_t ny = (int)np.z / CHUNK_SIZE;
-		uint32_t x = (int)position.x / CHUNK_SIZE;
-		uint32_t y = (int)position.z / CHUNK_SIZE;
-		if(dir != Math::Vec3{0, 0, 0} && (nx != x || ny != y))
+		if(dir != Math::Vec3{0, 0, 0})
 		{
-			currentChunk = GetCurrentChunk(nx, ny);
-			surroundingChunks[0] = GetCurrentChunk(nx+1, ny);
-			surroundingChunks[1] = GetCurrentChunk(nx-1, ny);
-			surroundingChunks[2] = GetCurrentChunk(nx, ny+1);
-			surroundingChunks[3] = GetCurrentChunk(nx, ny-1);
-			surroundingChunks[4] = GetCurrentChunk(nx+1, ny+1);
-			surroundingChunks[5] = GetCurrentChunk(nx-1, ny-1);
-			surroundingChunks[6] = GetCurrentChunk(nx+1, ny-1);
-			surroundingChunks[7] = GetCurrentChunk(nx-1, ny+1);
+			Math::Vec3 np = position + dir;
+			uint32_t nx = (int)np.x / CHUNK_SIZE;
+			uint32_t ny = (int)np.z / CHUNK_SIZE;
+			uint32_t x = (int)position.x / CHUNK_SIZE;
+			uint32_t y = (int)position.z / CHUNK_SIZE;
+			uint32_t newChunk = currentChunk;
+			if((nx != x || ny != y))
+			{
+				newChunk = GetCurrentChunk(nx, ny);
+			}
+
+			Math::Vec3 tile = GetTileInFront();
+			uint8_t cx = (uint8_t)tile.x % CHUNK_SIZE, cy = (uint8_t)-tile.z % CHUNK_SIZE;
+
+			iprintf("%d, %d\n", cx, cy);
+
+			if(GetChunk(newChunk).collisonMask[CHUNK_SIZE - 1 - cy][cx] != 0)
+				dir = Math::Vec3{0, 0, 0};
+			else if(newChunk != currentChunk)
+			{
+				currentChunk = newChunk;
+				surroundingChunks[0] = GetCurrentChunk(nx+1, ny);
+				surroundingChunks[1] = GetCurrentChunk(nx-1, ny);
+				surroundingChunks[2] = GetCurrentChunk(nx, ny+1);
+				surroundingChunks[3] = GetCurrentChunk(nx, ny-1);
+				surroundingChunks[4] = GetCurrentChunk(nx+1, ny+1);
+				surroundingChunks[5] = GetCurrentChunk(nx-1, ny-1);
+				surroundingChunks[6] = GetCurrentChunk(nx+1, ny-1);
+				surroundingChunks[7] = GetCurrentChunk(nx-1, ny+1);
+			}
+
+			
+
 		}
 			
 		
@@ -80,4 +99,10 @@ void Entity::update()
 			dir = Math::Vec3{0,0,0};
 		}
 	}
+}
+
+Math::Vec3 Entity::GetTileInFront()
+{
+	Math::Vec3 dir{(float)(-(state-2)%2), 0, (float)((state-1)%2)};
+	return position + dir;
 }

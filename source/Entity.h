@@ -24,6 +24,8 @@ public:
 public:
 	void update();
 
+	Math::Vec3 GetTileInFront();
+
 };
 
 #endif
