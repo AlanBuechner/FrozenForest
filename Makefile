@@ -26,7 +26,7 @@ SOURCES  := source
 INCLUDES := include
 DATA     := data
 GRAPHICS := images
-AUDIO    :=
+AUDIO    := Music
 ICON     :=
 
 # specify a directory which contains the nitro filesystem
@@ -94,6 +94,7 @@ PNGFILES	:=	$(foreach dir,$(GRAPHICS),$(notdir $(wildcard $(dir)/*.png)))
 BINFILES 	:=	$(foreach dir,$(DATA),$(notdir $(wildcard $(dir)/*.*)))
 
 export MODFILES	:=	$(foreach dir,$(notdir $(wildcard $(MUSIC)/*.*)),$(CURDIR)/$(MUSIC)/$(dir))
+
 
 # prepare NitroFS directory
 ifneq ($(strip $(NITRO)),)

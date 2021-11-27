@@ -5,19 +5,26 @@
 #include "Camera.h"
 #include "Map.h"
 #include "Entity.h"
+
 #include "Collision.h"
+#include "Audio.h"
 
 #include <nds.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <maxmod9.h>
+
 
 int main()
 {
 	Collision::Init();
 	Renderer::Init();
 	Console::Init();
+	AudioStream::Init();
+
+	AudioStream::Play(0);
 
 	Camera cam;
 	cam.Position = Math::Vec3{0,7,1};
@@ -33,6 +40,7 @@ int main()
 		// update input
 		Input::Update();
 		// update console
+		AudioStream::Update();
 		Console::Update();
 
 		// update player

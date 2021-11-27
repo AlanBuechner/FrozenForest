@@ -1,5 +1,6 @@
 #ifndef ENTITY_H
 #define ENTITY_H
+
 #include "Math.h"
 #include "Collision.h"
 #include <cstdint>
