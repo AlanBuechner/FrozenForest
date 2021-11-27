@@ -154,6 +154,12 @@ namespace Renderer
 
 	void DrawMesh(const Mesh& mesh, const Math::Vec3& position, uint8_t rotation)
 	{
+		if(position.z > 6 || position.z < -7)
+			return;
+		
+		if(position.x > 8.5f || position.x < -8.5f)
+			return;
+
 		glMatrixMode(GL_MODELVIEW);
 		glPushMatrix();
 
@@ -171,7 +177,7 @@ namespace Renderer
 			Vertex vert = mesh.verts[mesh.indices[i]];
 
 			glColor3b(255,0,0);
-			GFX_TEX_COORD = (TEXTURE_PACK(vert.uv.x, inttot16(vert.uv.y)));
+			GFX_TEX_COORD = (TEXTURE_PACK(vert.uv.x, vert.uv.y));
 			glVertex3v16(vert.position.x, vert.position.y, vert.position.z);
 		}
 
