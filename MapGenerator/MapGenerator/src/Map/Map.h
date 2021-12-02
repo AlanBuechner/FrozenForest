@@ -4,8 +4,6 @@
 #include <vector>
 #include <string>
 
-#include <stb_image.h>
-
 /*
 header:
 	uint32_t chunk section offset
@@ -77,7 +75,8 @@ struct ChunkSection
 struct Tile
 {
 	uint32_t meshId;
-	uint8_t rotation; 
+	uint16_t textureId;
+	uint8_t rotation;
 };
 
 struct TileSection

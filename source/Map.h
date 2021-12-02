@@ -35,6 +35,7 @@ struct Chunk
 struct Tile
 {
 	uint32_t meshId;
+	uint16_t textureId;
 	uint8_t rotation;
 };
 
@@ -89,7 +90,6 @@ inline const Tile& GetTile(uint32_t tileID) { return *(Tile*)((size_t)GetTileSec
 inline uint32_t GetNumberOfChunks() { return *(uint32_t*)GetChunkSection(); }
 inline uint32_t GetChunkXExtent() { return *(uint32_t*)((size_t)GetChunkSection() + sizeof(uint32_t)); }
 inline const Chunk& GetChunk(uint32_t chunkID) { return *(Chunk*)((size_t)GetChunkSection() + (2*sizeof(uint32_t)) + (chunkID*sizeof(Chunk))); }
-
 
 uint32_t GetCurrentChunk(uint32_t x, uint32_t y);
 

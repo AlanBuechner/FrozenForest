@@ -1,8 +1,33 @@
 {
     "Tiles":[
-        {"MeshID": 0, "Rotation": 0},
-        {"MeshID": 0, "Rotation": 1},
-        {"MeshID": 0, "Rotation": 2},
-        {"MeshID": 0, "Rotation": 3}
+        {"MeshID": 0, "Texture": 0, "Rotation": 0},
+
+        {"MeshID": 0, "Texture": 1, "Rotation": 0},
+
+        {"MeshID": 0, "Texture": 2, "Rotation": 0},
+        {"MeshID": 0, "Texture": 2, "Rotation": 1},
+        {"MeshID": 0, "Texture": 2, "Rotation": 2},
+        {"MeshID": 0, "Texture": 2, "Rotation": 3},
+
+        {"MeshID": 0, "Texture": 3, "Rotation": 0},
+        {"MeshID": 0, "Texture": 3, "Rotation": 1},
+        {"MeshID": 0, "Texture": 3, "Rotation": 2},
+        {"MeshID": 0, "Texture": 3, "Rotation": 3},
+
+        {"MeshID": 0, "Texture": 4, "Rotation": 0},
+        {"MeshID": 0, "Texture": 4, "Rotation": 1},
+        {"MeshID": 0, "Texture": 4, "Rotation": 2},
+        {"MeshID": 0, "Texture": 4, "Rotation": 3},
+
+        {"MeshID": 1, "Texture": 5, "Rotation": 0},
+        {"MeshID": 1, "Texture": 5, "Rotation": 1},
+        {"MeshID": 1, "Texture": 5, "Rotation": 2},
+        {"MeshID": 1, "Texture": 5, "Rotation": 3},
+
+        {"MeshID": 0, "Texture": 6, "Rotation": 0},
+        {"MeshID": 0, "Texture": 6, "Rotation": 1},
+        {"MeshID": 0, "Texture": 6, "Rotation": 2},
+        {"MeshID": 0, "Texture": 6, "Rotation": 3}
+
     ]
 }

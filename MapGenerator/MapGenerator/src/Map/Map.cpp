@@ -73,12 +73,17 @@ size_t MeshAllocationSize(Map& map)
 	size += map.meshSection.meshes.size() * sizeof(uint32_t);
 	for (auto& mesh : map.meshSection.meshes)
 	{
-		size += 2*sizeof(bool); // quad bool
-		size += sizeof(uint16_t); // nuber of vertices
-		size += sizeof(uint16_t); // nuber of indices
+		size_t meshSize = 0;
+		meshSize += 2*sizeof(bool); // quad bool
+		meshSize += sizeof(uint16_t); // nuber of vertices
+		meshSize += sizeof(uint16_t); // nuber of indices
 
-		size += mesh.vertices.size() * sizeof(Vert);
-		size += mesh.indices.size() * sizeof(uint16_t);
+		meshSize += mesh.vertices.size() * sizeof(Vert);
+		meshSize += mesh.indices.size() * sizeof(uint16_t);
+
+		meshSize += meshSize % 4;
+
+		size += meshSize;
 	}
 	return size;
 }
@@ -185,6 +190,8 @@ void CompileMap(Map& map, byte_t** data, size_t* size)
 		for (uint16_t j = 0; j < mesh.indices.size(); j++)
 			*(uint16_t*)(d + meshOffset + (j * sizeof(uint16_t))) = mesh.indices[j];
 		meshOffset += mesh.indices.size() * sizeof(uint16_t);
+
+		meshOffset += meshOffset % 4;
 		
 	}
 
@@ -251,6 +258,7 @@ void LoadMap(const rapidjson::Value& value, Map& map)
 		{
 			Tile tile;
 			json::Get(tiles[t], "MeshID", tile.meshId);
+			json::Get(tiles[t], "Texture", tile.textureId);
 			json::Get(tiles[t], "Rotation", tile.rotation);
 
 			map.tileSection.tiles.push_back(tile);

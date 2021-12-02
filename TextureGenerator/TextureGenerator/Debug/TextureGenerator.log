@@ -1,0 +1,6 @@
+﻿  Source.cpp
+C:\devkitPro\examples\nds\FrozenForest\TextureGenerator\TextureGenerator\src\Source.cpp(58,15): warning C4244: 'initializing': conversion from 'float' to 'uint16_t', possible loss of data
+C:\devkitPro\examples\nds\FrozenForest\TextureGenerator\TextureGenerator\src\Source.cpp(59,15): warning C4244: 'initializing': conversion from 'float' to 'uint16_t', possible loss of data
+C:\devkitPro\examples\nds\FrozenForest\TextureGenerator\TextureGenerator\src\Source.cpp(60,15): warning C4244: 'initializing': conversion from 'float' to 'uint16_t', possible loss of data
+C:\devkitPro\examples\nds\FrozenForest\TextureGenerator\TextureGenerator\src\Source.cpp(61,15): warning C4244: 'initializing': conversion from 'float' to 'uint16_t', possible loss of data
+  TextureGenerator.vcxproj -> C:\devkitPro\examples\nds\FrozenForest\TextureGenerator\Debug\TextureGenerator.exe

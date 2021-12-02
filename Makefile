@@ -161,7 +161,7 @@ else
   endif
 endif
 
-.PHONY: $(BUILD) clean map
+.PHONY: $(BUILD) clean map textures
 
 #---------------------------------------------------------------------------------
 $(BUILD):
@@ -236,3 +236,6 @@ run:
 
 map:
 	./MapGenerator\Debug\MapGenerator.exe
+
+textures:
+	./TextureGenerator\Debug\TextureGenerator.exe

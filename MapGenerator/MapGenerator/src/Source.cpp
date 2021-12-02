@@ -4,8 +4,6 @@
 
 #include "Map\Map.h"
 
-#include <stb_image.h>
-
 void IterateDirectory(Map& map, std::filesystem::path path)
 {
 	for (auto& p : std::filesystem::directory_iterator(path))

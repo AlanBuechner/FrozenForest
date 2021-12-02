@@ -6,8 +6,21 @@
 
 #include "player.h"
 
+// textures
+#include "snowtile_bin.h"
+#include "bushtile_bin.h"
+#include "bush_innercorner_bin.h"
+#include "bushcorner_bin.h"
+#include "bushside_bottom_bin.h"
+#include "slopeside_bottom_bin.h"
+#include "slopeturn_bin.h"
+
+
 namespace Renderer
 {
+	constexpr int numTextures = 7;
+	int textureIDs[numTextures];
+
 	struct Sprite
 	{
 		uint16_t* gfx;
@@ -105,13 +118,38 @@ namespace Renderer
 		bgSetPriority(0, 1);
 		oamInit(&oamMain, SpriteMapping_1D_128, false);
 
-		vramSetBankA(VRAM_A_MAIN_SPRITE);
+		// set vram backs
+		vramSetBankA(VRAM_A_TEXTURE);
+		vramSetBankB(VRAM_B_MAIN_SPRITE);
 
 		// create sprites
 		//MakeSprite(playerTiles, playerPal, 32*32, playerPalLen, SpriteSize_32x32);
 
 		// create animated sprites
 		MakeAnimatedSprite(playerTiles, playerPal, 32*32, playerPalLen, SpriteSize_32x32, 12);
+
+		// create opengl textures
+		glGenTextures(numTextures, textureIDs);
+		glBindTexture(0, textureIDs[0]);
+		glTexImage2D(0, 0, GL_RGBA, TEXTURE_SIZE_16 , TEXTURE_SIZE_16, 0, TEXGEN_TEXCOORD, (u8*)snowtile_bin);
+
+		glBindTexture(0, textureIDs[1]);
+		glTexImage2D(0, 0, GL_RGBA, TEXTURE_SIZE_16 , TEXTURE_SIZE_16, 0, TEXGEN_TEXCOORD, (u8*)bushtile_bin);
+
+		glBindTexture(0, textureIDs[2]);
+		glTexImage2D(0, 0, GL_RGBA, TEXTURE_SIZE_16 , TEXTURE_SIZE_16, 0, TEXGEN_TEXCOORD, (u8*)bush_innercorner_bin);
+
+		glBindTexture(0, textureIDs[3]);
+		glTexImage2D(0, 0, GL_RGBA, TEXTURE_SIZE_16 , TEXTURE_SIZE_16, 0, TEXGEN_TEXCOORD, (u8*)bushcorner_bin);
+
+		glBindTexture(0, textureIDs[4]);
+		glTexImage2D(0, 0, GL_RGBA, TEXTURE_SIZE_16 , TEXTURE_SIZE_16, 0, TEXGEN_TEXCOORD, (u8*)bushside_bottom_bin);
+
+		glBindTexture(0, textureIDs[5]);
+		glTexImage2D(0, 0, GL_RGBA, TEXTURE_SIZE_16 , TEXTURE_SIZE_16, 0, TEXGEN_TEXCOORD, (u8*)slopeside_bottom_bin);
+
+		glBindTexture(0, textureIDs[6]);
+		glTexImage2D(0, 0, GL_RGBA, TEXTURE_SIZE_16 , TEXTURE_SIZE_16, 0, TEXGEN_TEXCOORD, (u8*)slopeturn_bin);
 
 	}
 
@@ -152,7 +190,7 @@ namespace Renderer
 		);		
 	}
 
-	void DrawMesh(const Mesh& mesh, const Math::Vec3& position, uint8_t rotation)
+	void DrawMesh(const Mesh& mesh, const Math::Vec3& position, uint8_t rotation, uint16_t textureId)
 	{
 		if(position.z > 6 || position.z < -7)
 			return;
@@ -168,15 +206,25 @@ namespace Renderer
 		glRotateX(0.0f);
 		glRotateY(90.0f * rotation);
 
+		//glMaterialf(GL_AMBIENT, RGB15(16,16,16));
+		//glMaterialf(GL_DIFFUSE, RGB15(16,16,16));
+		//glMaterialf(GL_SPECULAR, BIT(15) | RGB15(8,8,8));
+		glMaterialf(GL_EMISSION, RGB15(16,16,16));
+
+		//ds uses a table for shinyness..this generates a half-ass one
+		//glMaterialShinyness();
+
 		glPolyFmt(POLY_ALPHA(31) | POLY_CULL_NONE);
 
+		glBindTexture(0, textureIDs[textureId]);
+
 		glBegin(mesh.quds? GL_QUADS : GL_TRIANGLES);
+		glNormal(NORMAL_PACK(0,inttov10(1),0));
 
 		for(uint16_t i = 0; i < mesh.indexCount; i++)
 		{
 			Vertex vert = mesh.verts[mesh.indices[i]];
 
-			glColor3b(255,0,0);
 			GFX_TEX_COORD = (TEXTURE_PACK(vert.uv.x, vert.uv.y));
 			glVertex3v16(vert.position.x, vert.position.y, vert.position.z);
 		}
@@ -188,7 +236,7 @@ namespace Renderer
 
 	void DrawTile(const Tile& tile, const Math::Vec3& position)
 	{
-		DrawMesh(GetMesh(tile.meshId), position, tile.rotation & 0b11);
+		DrawMesh(GetMesh(tile.meshId), position, tile.rotation & 0b11, tile.textureId);
 	}
 
 	void DrawChunk(const Chunk& chunk, const Math::Vec3& pos)
@@ -200,8 +248,8 @@ namespace Renderer
 			{
 				for(uint8_t y = 0; y < CHUNK_SIZE; y++)
 				{
-					uint32_t tileIndex = chunk.layers[c].tiles[x][y];
-					uint32_t height = chunk.layers[c].height[x][y];
+					uint32_t tileIndex = chunk.layers[c].tiles[y][x];
+					uint32_t height = chunk.layers[c].height[y][x];
 					if(tileIndex != 0)
 						DrawTile(GetTile(tileIndex-1), {p.x+x, height-p.y, p.z+y-CHUNK_SIZE+1});
 				}

@@ -19,12 +19,12 @@
 
 int main()
 {
+	Console::Init();
 	Collision::Init();
 	Renderer::Init();
-	Console::Init();
 	AudioStream::Init();
 
-	AudioStream::Play(0);
+	//AudioStream::Play(0);
 
 	Camera cam;
 	cam.Position = Math::Vec3{0,7,1};

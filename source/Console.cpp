@@ -61,7 +61,7 @@ namespace Console
 				if (currentTime >= nextPrintTime)
 				{
 					iprintf("%c", print[currentIndex]);
-					nextPrintTime += 0.25f;
+					nextPrintTime += 0.1f;
 						currentIndex++;
 					if (currentIndex == print.size())
 						print = "";

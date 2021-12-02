@@ -3,7 +3,7 @@
 
 namespace Collision
 {
-    constexpr uint32_t collisionTypes = 3;
+    constexpr uint32_t collisionTypes = 4;
     CollisionData data[collisionTypes];
 
     void Init()
