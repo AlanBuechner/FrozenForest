@@ -24,10 +24,15 @@
         {"MeshID": 1, "Texture": 5, "Rotation": 2},
         {"MeshID": 1, "Texture": 5, "Rotation": 3},
 
-        {"MeshID": 0, "Texture": 6, "Rotation": 0},
-        {"MeshID": 0, "Texture": 6, "Rotation": 1},
-        {"MeshID": 0, "Texture": 6, "Rotation": 2},
-        {"MeshID": 0, "Texture": 6, "Rotation": 3}
+        {"MeshID": 2, "Texture": 6, "Rotation": 0},
+        {"MeshID": 2, "Texture": 6, "Rotation": 1},
+        {"MeshID": 2, "Texture": 6, "Rotation": 2},
+        {"MeshID": 2, "Texture": 6, "Rotation": 3},
+
+        {"MeshID": 3, "Texture": 6, "Rotation": 0},
+        {"MeshID": 3, "Texture": 6, "Rotation": 1},
+        {"MeshID": 3, "Texture": 6, "Rotation": 2},
+        {"MeshID": 3, "Texture": 6, "Rotation": 3}
 
     ]
 }

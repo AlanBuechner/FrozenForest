@@ -201,7 +201,7 @@ namespace Renderer
 		glMatrixMode(GL_MODELVIEW);
 		glPushMatrix();
 
-		glTranslatef32(floattof32(position.x), floattof32(position.y), floattof32(position.z));
+		glTranslatef32(floattof32(position.x), floattof32(position.y/2), floattof32(position.z));
 				
 		glRotateX(0.0f);
 		glRotateY(90.0f * rotation);
