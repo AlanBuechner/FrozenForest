@@ -33,7 +33,11 @@ int main()
 	Renderer::SetCamera(cam);
 
 	Entity player;
-	player.position = Math::Vec3{4, 0, -4};
+	player.position = Math::Vec3{5, 0, -4};
+	player.currentChunk = 0;
+	uint32_t s[8] = {UINT32_MAX,UINT32_MAX,UINT32_MAX,UINT32_MAX,UINT32_MAX,1, 3, 4};
+	for(uint8_t i = 0; i < 8; i++)
+		player.surroundingChunks[i] = s[i];
 
 	while(1)
 	{

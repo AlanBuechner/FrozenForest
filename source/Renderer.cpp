@@ -14,11 +14,12 @@
 #include "bushside_bottom_bin.h"
 #include "slopeside_bottom_bin.h"
 #include "slopeturn_bin.h"
+#include "sparkle_bin.h"
 
 
 namespace Renderer
 {
-	constexpr int numTextures = 7;
+	constexpr int numTextures = 8;
 	int textureIDs[numTextures];
 
 	struct Sprite
@@ -151,6 +152,9 @@ namespace Renderer
 		glBindTexture(0, textureIDs[6]);
 		glTexImage2D(0, 0, GL_RGBA, TEXTURE_SIZE_16 , TEXTURE_SIZE_16, 0, TEXGEN_TEXCOORD, (u8*)slopeturn_bin);
 
+		glBindTexture(0, textureIDs[7]);
+		glTexImage2D(0, 0, GL_RGBA, TEXTURE_SIZE_16 , TEXTURE_SIZE_16, 0, TEXGEN_TEXCOORD, (u8*)sparkle_bin);
+
 	}
 
 	void BeginFrame()
@@ -216,7 +220,10 @@ namespace Renderer
 
 		glPolyFmt(POLY_ALPHA(31) | POLY_CULL_NONE);
 
-		glBindTexture(0, textureIDs[textureId]);
+		if(textureId >= numTextures)
+			glBindTexture(0, textureIDs[0]);
+		else
+			glBindTexture(0, textureIDs[textureId]);
 
 		glBegin(mesh.quds? GL_QUADS : GL_TRIANGLES);
 		glNormal(NORMAL_PACK(0,inttov10(1),0));

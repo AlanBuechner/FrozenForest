@@ -32,7 +32,9 @@
         {"MeshID": 3, "Texture": 6, "Rotation": 0},
         {"MeshID": 3, "Texture": 6, "Rotation": 1},
         {"MeshID": 3, "Texture": 6, "Rotation": 2},
-        {"MeshID": 3, "Texture": 6, "Rotation": 3}
+        {"MeshID": 3, "Texture": 6, "Rotation": 3},
+
+        {"MeshID": 4, "Texture": 7, "Rotation": 0}
 
     ]
 }
